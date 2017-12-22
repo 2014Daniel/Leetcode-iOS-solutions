@@ -1,0 +1,34 @@
+class Solution {
+    func generateParenthesis(_ n: Int) -> [String] {
+        var result  = [String]()
+        var path = String()
+        _dfs(&result, path, 0, 0, n)
+        return result
+    }
+    
+    func _dfs(_ result : inout [String], _ path : String, _ start : Int, _ end : Int, _ n : Int) {
+       
+        if start > n || end > n {
+            return
+        }
+        
+        if (path.count == 2 * n) {
+            result.append(path)
+        }
+        
+        var path = path
+        if start == end {
+            path += "("
+            _dfs(&result, path, start + 1, end, n)            
+        } else if start > end {
+            // case 1: add "("
+            path += "("
+            _dfs(&result, path, start + 1, end, n)
+            path = String(path.characters.dropLast())
+            
+            // case 2: add ")"
+            path += ")"
+            _dfs(&result, path, start, end + 1, n)
+        }
+    }
+}

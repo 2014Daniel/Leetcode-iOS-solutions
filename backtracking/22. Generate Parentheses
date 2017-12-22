@@ -2,11 +2,12 @@ class Solution {
     func generateParenthesis(_ n: Int) -> [String] {
         var result  = [String]()
         var path = String()
-        _dfs(&result, path, 0, 0, n)
+        _dfs(&result, &path, 0, 0, n)
         return result
     }
     
-    func _dfs(_ result : inout [String], _ path : String, _ start : Int, _ end : Int, _ n : Int) {
+    // now path is a var and not a let, and it can be forwarded to next level of DFS
+    func _dfs(_ result : inout [String], _ path : inout String, _ start : Int, _ end : Int, _ n : Int) {
        
         if start > n || end > n {
             return
@@ -16,19 +17,21 @@ class Solution {
             result.append(path)
         }
         
-        var path = path
+        //var path = path
         if start == end {
             path += "("
-            _dfs(&result, path, start + 1, end, n)            
+            _dfs(&result, &path, start + 1, end, n)
+            path = String(path.characters.dropLast())
         } else if start > end {
             // case 1: add "("
             path += "("
-            _dfs(&result, path, start + 1, end, n)
+            _dfs(&result, &path, start + 1, end, n)
             path = String(path.characters.dropLast())
             
             // case 2: add ")"
             path += ")"
-            _dfs(&result, path, start, end + 1, n)
+            _dfs(&result, &path, start, end + 1, n)
+            path = String(path.characters.dropLast())
         }
     }
 }

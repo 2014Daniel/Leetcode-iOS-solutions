@@ -1,3 +1,11 @@
+// solution: use DFS to recursively search for all the valid Parentheses. Eeah DFS will add either a "(" or ")" to the path. when the 
+// path length is 2 * n, it's the termination condition. At each level of DFS, when the start length equals to the end length, we just add the "(" to 
+//the path. when the start length is greater than the end length, we can add either a "(" or ")" to the path. that is: add "(" to the path,
+// then DFS(start + 1), remove "(" from the path. Or add a ")" to the path, then DFS(end + 1), remove ")" from the path.
+// note some pruning(or excluded) cases: when start > n, or end > n, we should stop DFS.
+
+// key data structure: result, path, start means the count of current "(", end means the count of current ")".
+
 class Solution {
     func generateParenthesis(_ n: Int) -> [String] {
         var result  = [String]()

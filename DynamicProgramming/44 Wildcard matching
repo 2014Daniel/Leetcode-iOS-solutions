@@ -18,6 +18,7 @@
 //    isMatch[i][0] = isMatch[i-1][0] if pattern[i-1] = "*" else false
 class Solution {
     func isMatch(_ s: String, _ p: String) -> Bool {
+        // be careful: s is an empty string and p is an empty string
         if s == "" && p == "" {
             return true
         }
@@ -27,6 +28,8 @@ class Solution {
         var isMatch = Array(repeating:(Array(repeating: false, count: source.count + 1)), count: pattern.count + 1)
         isMatch[0][0] = true
         
+        // we need to make sure pattern is not empty, because line 36 needs pattern length >= 1
+        //when pattern is an empty string but source is not
         if pattern.count == 0 {
             return false
         } 
@@ -36,6 +39,7 @@ class Solution {
             }
         }
         
+        // we need to make sure source is not empty, because line 36 needs source length >= 1
         if source.count == 0 {
             return isMatch[pattern.count][0]
         }
@@ -59,3 +63,4 @@ class Solution {
         
     }
 }
+

@@ -1,0 +1,21 @@
+class Solution {
+    func subsets(_ nums: [Int]) -> [[Int]] {
+        let nums1 = nums.sorted()
+        var res = [[Int]]()
+        var path = [Int]()
+        dfs(&res, &path, 0, nums1)
+        return res
+    }
+    
+    func dfs(_ res: inout [[Int]], _ path: inout [Int], _ current: Int, _ nums: [Int]) {
+        res.append(path)
+        if current == nums.count {
+            return
+        }
+        for i in current ..< nums.count {
+            path.append(nums[i])
+            dfs(&res, &path, i + 1, nums)
+            path.removeLast()
+        }
+    }
+}

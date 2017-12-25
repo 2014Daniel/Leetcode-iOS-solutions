@@ -1,0 +1,26 @@
+class Solution {
+    func subsetsWithDup(_ nums: [Int]) -> [[Int]] {
+        var result = [[Int]]()
+        var path = [Int]()
+        var nums1 = nums.sorted()
+        
+        dfs(&result, &path, 0, nums1)
+        return result
+    }
+    
+    func dfs(_ result: inout [[Int]], _ path: inout [Int], _ current: Int, _ nums: [Int]) {
+        result.append(path)
+        if current == nums.count {
+            return
+        }
+        
+        for i in current..<nums.count {
+            if i != current && nums[i] == nums[i-1] {
+                continue
+            }
+            path.append(nums[i])
+            dfs(&result, &path, i + 1, nums)
+            path.removeLast()
+        }
+    }
+}

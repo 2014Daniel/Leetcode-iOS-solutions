@@ -1,0 +1,31 @@
+class Solution {
+    func combinationSum2(_ candidates: [Int], _ target: Int) -> [[Int]] {
+        var result = [[Int]]()
+        var path = [Int]()
+        if candidates.count == 0 {
+            return result
+        }
+        // 
+        var candidates1 = candidates.sorted()
+        dfs(&result, &path, 0, target, candidates1)
+        return result  
+    }
+    
+    func dfs(_ result: inout [[Int]], _ path: inout [Int], _ index: Int, _ remainingTarget: Int, _ candidates: [Int]) {
+        if remainingTarget < 0 {
+            return
+        } else if (remainingTarget == 0) {
+            result.append(path)
+            return
+        }
+        
+        for i in index..<candidates.count {
+            if i != index && candidates[i] == candidates[i-1] {
+                continue
+            }
+            path.append(candidates[i])
+            dfs(&result, &path, i + 1, remainingTarget - candidates[i], candidates)
+            path.removeLast()
+        }
+    }
+}

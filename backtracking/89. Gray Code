@@ -1,0 +1,56 @@
+
+
+class Solution {
+    let pwrInt:(Int,Int)->Int = { a,b in return Int(pow(Double(a),Double(b))) }
+    
+    func grayCode(_ n: Int) -> [Int] {
+        var path = [Int]()
+        var currentArray = [Int](repeating: 0, count: n)
+        path.append(0)
+        dfs(&path, &currentArray, n)
+        return path
+    }
+    
+    func dfs(_ path: inout [Int], _ currentArray: inout [Int], _ n: Int) -> Bool{
+        if path.count == pwrInt(2, n) {
+            return true
+        }
+        
+        for i in 0..<n {
+            if (currentArray[i] == 0) {
+                currentArray[i] = 1
+                var newNumber = getValue(currentArray)
+                if !path.contains(newNumber) {
+                    path.append(newNumber)
+                    if dfs(&path, &currentArray, n) {
+                        return true
+                    }
+                    path.removeLast()
+                }
+                currentArray[i] = 0
+            } else {
+                currentArray[i] = 0
+                var newNumber = getValue(currentArray)
+                if !path.contains(newNumber) {
+                    path.append(newNumber)
+                    if dfs(&path, &currentArray, n) {
+                        return true
+                    }
+                    path.removeLast()
+                }
+                currentArray[i] = 1
+            }
+        }
+        return false
+    }
+    
+    func getValue(_ array: [Int]) -> Int {
+        var sum = 0
+        for i in 0..<array.count {
+            sum += pwrInt(2, i) * array[i]
+        }
+        return sum
+    }
+    
+    
+}

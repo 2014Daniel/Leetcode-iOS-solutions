@@ -1,0 +1,29 @@
+//my classical dfs pattn, each dfs will add a element to the path. But this will cause time limit exceeded due to a lot 
+// of checks at each dfs level at line 18.
+
+class Solution {
+    func countArrangement(_ N: Int) -> Int {
+        var path = [Int]()
+        var total = 0
+        dfs(&path, N, &total)
+        return total
+    }
+    
+    func dfs(_ path: inout [Int], _ N: Int, _ total: inout Int) {
+        if (path.count == N) {
+            total = total + 1
+            return
+        }
+        
+        for i in 1...N {
+            // index is path.count + 1
+            // nums is i
+            var index = path.count + 1
+            if !path.contains(i) && ( index % i == 0 || i % index == 0) {
+                path.append(i)
+                dfs(&path, N, &total)
+                path.removeLast()
+            }
+        }
+    }
+}

@@ -1,0 +1,43 @@
+//Solution 1:  focus on the path, from position 1 to N, each DFS will check all the 
+//candidates {array[start],  array[start+1], array[start+2], ...array[N] }at current position start. 
+//And if after swap with candidates, start % array[i] == 0 || array[i] % start == 0, then swap.
+
+//Termination condition: is start  = N + 1, because when start = N, we still need to check if array[N] is valid 
+//(following rule:start % array[i] == 0 || array[i] % start == 0 ) by line 27 to 31,
+//so at line 19, we should check start == N + 1 rather start = N
+
+class Solution {
+    func countArrangement(_ N: Int) -> Int {
+        if N == 0 {
+            return 0
+        }
+        var array = [Int](repeating: 0, count: N + 1)
+        for i in 1...N {
+            array[i] = i
+        }
+        
+        var count = 0;
+        dfs(&array, &count, 1, N)
+        return count
+    }
+    
+    func dfs(_ array: inout [Int], _ count: inout Int, _ start: Int, _ N: Int) {
+        //  we should not write start == N due to that we need to check array[N] at N too
+        if start == N + 1{
+            count = count + 1
+            return
+        }
+        
+        for i in start...N {
+            // i is the candidate to be swapped
+            // the index is start and value is i
+            if start % array[i] == 0 || array[i] % start == 0 {
+                array.swapAt(start, i)
+                // we should not write dfs(&array, &count, i + 1, N), we just check each position of the array, a complete answer
+                // should has N level dfs, and each dfs check each position of the array
+                dfs(&array, &count, start + 1, N)
+                array.swapAt(start, i)
+            }
+        }
+    }
+}

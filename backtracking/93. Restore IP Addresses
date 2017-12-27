@@ -1,0 +1,44 @@
+// what is the defination of an valid ip address
+// 1. path contains only 4 parts, that's why we use depth == 5 to exclude unnecessary cases
+// 2. at each dfs, if we pick only one digit, that digit should be 0
+// 3. at each dfs, value <= 255
+
+class Solution {
+    func restoreIpAddresses(_ s: String) -> [String] {
+        var result = [String]()
+        var path = [Character]()
+        let input = [Character](s)
+        dfs(&result, &path, input, 0, 1)
+        return result
+    }
+    
+    func dfs(_ result: inout [String], _ path: inout [Character], _ input: [Character], _ start: Int, _ depth: Int) {
+        // depth can be 1, 2, 3, 4, because we check depth first then add a valid candidate to the path,
+        // so the termination condition is depth == 5 not depth == 4
+        if depth == 5 && start != input.count {
+            return
+        }
+        
+        if depth == 5 && start == input.count {
+            //to git rid of last "."
+            path.removeLast()
+            result.append(String(path))
+            return
+        }
+        
+        for i in start...min(start + 2, input.count -1) {
+            var value = Int(input[start...i])
+            if (i == start && value == 0) ||(value > 255) {
+                   continue
+            }
+            
+            // start...i
+            //path.append(input[start...i])
+            path.append += input[start...i]
+            path.append(".")
+            dfs(&result, &path, input, i + 1, depth + 1)
+            var removedRange = [path.count-1 - 1 - (i-start + 1)...path.count-1]
+            path.removeSubrange(removedRange)
+        }
+    }
+}

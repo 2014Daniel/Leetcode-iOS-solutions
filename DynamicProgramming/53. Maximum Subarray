@@ -1,0 +1,22 @@
+class Solution {
+    // state: dp[i] means the largest sum of subarry that ends with i
+    // transfer function: dp[i] = array[i] + dp[i-1] > 0 ? dp[i-1] : 0
+    // initial state: dp[0] = array[i]
+    // answer: max{dp[0...array.count - 1]}
+    //
+    func maxSubArray(_ nums: [Int]) -> Int {
+        var maxValueWithI = Array(repeating: 0, count: nums.count)
+        
+        var m = nums[0]
+        maxValueWithI[0] = nums[0]
+        for i in 1..<nums.count {
+            if (maxValueWithI[i-1] > 0) {
+                maxValueWithI[i] = maxValueWithI[i-1] + nums[i]
+            } else  {
+                maxValueWithI[i] = nums[i]
+            }
+            m = max(m, maxValueWithI[i])
+        }
+        return m
+    }
+}
